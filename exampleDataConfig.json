@@ -1,0 +1,18 @@
+// udpplot data config file
+{
+	"graph" :
+	{
+		"count": 2
+	},
+	"curves" : 
+	{
+		"count": 3,
+		"defs":[
+//			{"Name":"i", "graph":-1}, //1
+			{"Name":"sin","graph":0}, //2
+			{"Name":"cos","graph":0}, //3
+			{"Name":"theta","graph":1} //4
+			]
+	}
+
+}
