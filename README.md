@@ -1,2 +1,2 @@
 # udpPlot
-Easy plotting of date received from udp
+Easy plotting of data received over udp
