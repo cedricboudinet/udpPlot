@@ -36,9 +36,11 @@ class udpPlotFrame: public wxFrame
         void OnStopCaptureSelected(wxCommandEvent& event);
         void OnMenuItemLoadDataFormatSelected(wxCommandEvent& event);
         void OnStartStopCaptureSelected(wxCommandEvent& event);
+        void OnMenuRefreshSelected(wxCommandEvent& event);
         //*)
         //(*Identifiers(udpPlotFrame)
         static const long idMenuStartStopCapture;
+        static const long idMenuRefresh;
         static const long idMenuQuit;
         static const long idMenuSocket;
         static const long idMenuLoadDataFormat;
@@ -49,6 +51,7 @@ class udpPlotFrame: public wxFrame
         //(*Declarations(udpPlotFrame)
         wxStatusBar* StatusBar1;
         wxMenu* Menu3;
+        wxMenuItem* MenuRefresh;
         wxMenuItem* MenuItem3;
         wxMenuItem* MenuItemLoadDataFormat;
         wxBoxSizer* PlotsBoxSizer;
@@ -67,6 +70,7 @@ class udpPlotFrame: public wxFrame
         int capturing=0;
         void captureLoop();
         void OnUdpPlotViewChanged(wxCommandEvent&);
+        void RefreshData();
 };
 
 #endif // UDPPLOTMAIN_H

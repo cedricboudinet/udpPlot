@@ -15,6 +15,11 @@
 					<accel>Alt-A</accel>
 					<handler function="OnStartStopCaptureSelected" entry="EVT_MENU" />
 				</object>
+				<object class="wxMenuItem" name="idMenuRefresh" variable="MenuRefresh" member="yes">
+					<label>Refresh</label>
+					<accel>Alt-R</accel>
+					<handler function="OnMenuRefreshSelected" entry="EVT_MENU" />
+				</object>
 				<object class="wxMenuItem" name="idMenuQuit" variable="MenuItem1" member="no">
 					<label>Quit</label>
 					<accel>Alt-F4</accel>

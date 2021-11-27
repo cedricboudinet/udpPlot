@@ -50,6 +50,7 @@ wxString wxbuildinfo(wxbuildinfoformat format)
 
 //(*IdInit(udpPlotFrame)
 const long udpPlotFrame::idMenuStartStopCapture = wxNewId();
+const long udpPlotFrame::idMenuRefresh = wxNewId();
 const long udpPlotFrame::idMenuQuit = wxNewId();
 const long udpPlotFrame::idMenuSocket = wxNewId();
 const long udpPlotFrame::idMenuLoadDataFormat = wxNewId();
@@ -80,6 +81,8 @@ udpPlotFrame::udpPlotFrame(wxWindow* parent,wxWindowID id)
     Menu1 = new wxMenu();
     StartStopCapture = new wxMenuItem(Menu1, idMenuStartStopCapture, _("Start Capture\tAlt-A"), wxEmptyString, wxITEM_NORMAL);
     Menu1->Append(StartStopCapture);
+    MenuRefresh = new wxMenuItem(Menu1, idMenuRefresh, _("Refresh\tAlt-R"), wxEmptyString, wxITEM_NORMAL);
+    Menu1->Append(MenuRefresh);
     MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
     Menu1->Append(MenuItem1);
     MenuBar1->Append(Menu1, _("&File"));
@@ -104,6 +107,7 @@ udpPlotFrame::udpPlotFrame(wxWindow* parent,wxWindowID id)
     Layout();
 
     Connect(idMenuStartStopCapture,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&udpPlotFrame::OnStartStopCaptureSelected);
+    Connect(idMenuRefresh,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&udpPlotFrame::OnMenuRefreshSelected);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&udpPlotFrame::OnQuit);
     Connect(idMenuSocket,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&udpPlotFrame::OnConfig);
     Connect(idMenuLoadDataFormat,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&udpPlotFrame::OnMenuItemLoadDataFormatSelected);
@@ -155,7 +159,7 @@ void udpPlotFrame::OnStartStopCaptureSelected(wxCommandEvent& event)
     {
         printf("starting capture\n");
         //captureLoop();
-        StartStopCapture->SetItemLabel("Stop capture");
+        StartStopCapture->SetItemLabel("Stop capture\tAlt-A");
         capturing=1;
         std::thread * t =new std::thread(&udpPlotFrame::captureLoop, this);
         (void)t;
@@ -163,7 +167,7 @@ void udpPlotFrame::OnStartStopCaptureSelected(wxCommandEvent& event)
     else
     {
         capturing=0;
-        StartStopCapture->SetItemLabel("Start capture");
+        StartStopCapture->SetItemLabel("Start capture\tAlt-A");
     }
 
 }
@@ -219,6 +223,13 @@ void udpPlotFrame::captureLoop()
         }
     }
     //graph update
+    RefreshData();
+    close(udpSocket);
+}
+
+void udpPlotFrame::RefreshData()
+{
+    size_t nbCurves = mpFXYVectors.size();
     for(size_t icurve=0;icurve<nbCurves;icurve++)
     {
         mpFXYVectors[icurve]->SetData(Vector_X, Vectors_Y[icurve]);
@@ -232,7 +243,6 @@ void udpPlotFrame::captureLoop()
         mpw->UpdateAll();
         mpw->Fit();
     });
-    close(udpSocket);
 }
 
 void udpPlotFrame::OnMenuItemLoadDataFormatSelected(wxCommandEvent& event)
@@ -341,4 +351,9 @@ void udpPlotFrame::OnUdpPlotViewChanged(wxCommandEvent& event)
         }
     }
     blocked=0;
+}
+
+void udpPlotFrame::OnMenuRefreshSelected(wxCommandEvent& event)
+{
+    RefreshData();
 }
