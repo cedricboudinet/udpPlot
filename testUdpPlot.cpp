@@ -12,7 +12,7 @@
 int main(int argc, char ** argv)
 {
     int port=43210;
-    char * ip="127.0.0.1";
+    char  ip[]="127.0.0.1";
     if(argc>1)
         port=atoi(argv[1]);
     if(argc>2)
@@ -29,16 +29,20 @@ int main(int argc, char ** argv)
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(port);
     servaddr.sin_addr.s_addr =inet_addr(ip);
-    int64_t i=0; double vals[4];
+
+	int nbCurvesAdd = 10;
+    int64_t i=0; double vals[3+nbCurvesAdd];
     while(1)
     {
         double theta=fmod(2*M_PI*i/50,2*M_PI);
-        usleep(208);
+        usleep(100);
         //vals[0]=i;
         vals[0]=sin(theta);
         vals[1]=cos(theta);
         vals[2]=theta;
-        sendto(sockfd, (const char *)vals, sizeof(double)*3,
+	for(int i=0;i<nbCurvesAdd;i++)
+		vals[3+i]=sin(theta+i*M_PI*2/nbCurvesAdd);
+        sendto(sockfd, (const char *)vals, sizeof(double)*(3+nbCurvesAdd),
         /*MSG_CONFIRM*/ MSG_DONTWAIT, (const struct sockaddr *) &servaddr,
             sizeof(servaddr));
         i++;
