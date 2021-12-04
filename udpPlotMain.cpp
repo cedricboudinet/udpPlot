@@ -151,6 +151,10 @@ void udpPlotFrame::postInit()
     plotColours.push_back(wxBLUE);
     plotColours.push_back(wxRED);
     plotColours.push_back(wxGREEN);
+	plotColours.push_back(wxCYAN);
+	plotColours.push_back(wxLIGHT_GREY);
+	plotColours.push_back(wxYELLOW);
+	
 }
 
 void udpPlotFrame::OnStartStopCaptureSelected(wxCommandEvent& event)
@@ -320,7 +324,7 @@ void udpPlotFrame::OnMenuItemLoadDataFormatSelected(wxCommandEvent& event)
         int dest=root["curves"]["defs"][i]["graph"].asInt();
         std::cout<<"name:"<<name<<" dest:"<<dest<<std::endl;
         mpFXYVector * FXYvector = new mpFXYVector(_(name), 0);
-        wxPen   Vector1_PEN(*plotColours[i%3]);//alors la c'est plus complique parce qu'il faut les compter par graph
+        wxPen   Vector1_PEN(*plotColours[i%plotColours.size()]);
         FXYvector->ShowName(false);
         FXYvector->SetPen(Vector1_PEN);
         FXYvector->SetContinuity(true);
