@@ -263,7 +263,7 @@ void udpPlotFrame::OnMenuItemLoadDataFormatSelected(wxCommandEvent& event)
     JSONCPP_STRING errs;
     if (!parseFromStream(builder, ifs, &root, &errs)) {
          std::cout << errs << std::endl;
-         //TODO: parse error message
+	wxMessageBox(std::string("Parsing config failed with error:\n")+errs, "Error", wxICON_ERROR);
         return;
     }
     ////suppressing old layout
