@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=udpPlot
+Exec=udpPlot
+Type=Application
+#X-FullPathIcon=/path/to/udpPlot.png
+#Icon=udpPlot
+Categories=Scientific;

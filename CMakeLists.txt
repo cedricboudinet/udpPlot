@@ -11,6 +11,7 @@ include_directories(/usr/include/codeblocks/wxContribItems/wxMathPlot)
 include(${wxWidgets_USE_FILE})
 
 INSTALL(TARGETS udpPlot RUNTIME DESTINATION bin COMPONENT Applications)
+install(FILES udpPlot.desktop DESTINATION share/applications)
 SET(CPACK_PACKAGE_DESCRIPTION "udpPlot")
 SET(CPACK_PACKAGE_CONTACT "Cedric Boudinet")
 SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libwxmathplot")
