@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(udpPlot)
-add_executable(udpPlot udpPlotApp.cpp udpPlotWindow.cpp udpPlotMain.cpp ConfigDialog.cpp)
+add_executable(udpPlot wxf_gen/udpPlotBase.cpp main.cpp udpPlot.cpp udpPlotWindow.cpp)
 add_executable(testUdpPlot testUdpPlot.cpp)
 find_package(wxWidgets REQUIRED core base)
 target_link_libraries(udpPlot ${wxWidgets_LIBRARIES})
