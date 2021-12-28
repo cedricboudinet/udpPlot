@@ -1,0 +1,16 @@
+// broken config file
+{
+	"graph" :
+	{
+		"count": 1
+	},
+	"curves" : 
+	{
+		"count": 3,
+		"defs":[
+			{"Name":"missing comma","graph":0}
+			{"Name":"good line","graph":0}
+			]
+	}
+
+}

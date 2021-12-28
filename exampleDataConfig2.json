@@ -1,0 +1,28 @@
+// udpplot data config file
+{
+	"graph" :
+	{
+		"count": 3
+	},
+	"curves" : 
+	{
+		"count": 9,
+		"defs":[
+//			{"Name":"i", "graph":-1}, //1
+			{"Name":"sin","graph":0, "colour":"red"}, //2
+			{"Name":"cos","graph":0, "colour":"blue"}, //3
+			{"Name":"theta","graph":1, "colour":"red"}, //4
+			{"Name":"sin0","graph":2, "colour":"red"}, //4
+			{"Name":"sin1","graph":2, "colour":"red"}, //4
+			{"Name":"sin2","graph":2, "colour":"red"}, //4
+			{"Name":"sin3","graph":2, "colour":"red"}, //4
+			{"Name":"sin4","graph":2, "colour":"red"}, //4
+			{"Name":"sin5","graph":2, "colour":"red"} //4
+//			{"Name":"sin6","graph":2, "colour":"00FF00"}, //4
+//			{"Name":"sin7","graph":2, "colour":"000000"}, //4
+//			{"Name":"sin8","graph":2, "colour":"FF8000"}, //4
+//			{"Name":"sin9","graph":2, "colour":"FFFF00"} //4
+			]
+	}
+
+}
