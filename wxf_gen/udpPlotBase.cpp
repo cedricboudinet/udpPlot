@@ -20,15 +20,19 @@ udpPlotFrameBase::udpPlotFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	this->Layout();
 	m_statusBar1 = this->CreateStatusBar( 1, wxSTB_SIZEGRIP, wxID_ANY );
 	m_menubar1 = new wxMenuBar( 0 );
-	m_menu1 = new wxMenu();
-	mnuItm_startStopCapt = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("Start capture") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu1->Append( mnuItm_startStopCapt );
+	mnuFile = new wxMenu();
+	mnuItm_startStopCapt = new wxMenuItem( mnuFile, wxID_ANY, wxString( wxT("Start capture") ) + wxT('\t') + wxT("alt+A"), wxEmptyString, wxITEM_NORMAL );
+	mnuFile->Append( mnuItm_startStopCapt );
+
+	wxMenuItem* mnuItm_refresh;
+	mnuItm_refresh = new wxMenuItem( mnuFile, wxID_ANY, wxString( wxT("Refresh") ) + wxT('\t') + wxT("alt+r"), wxEmptyString, wxITEM_NORMAL );
+	mnuFile->Append( mnuItm_refresh );
 
 	wxMenuItem* m_menuItem2;
-	m_menuItem2 = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("Quit") ) + wxT('\t') + wxT("alt+q"), wxEmptyString, wxITEM_NORMAL );
-	m_menu1->Append( m_menuItem2 );
+	m_menuItem2 = new wxMenuItem( mnuFile, wxID_ANY, wxString( wxT("Quit") ) + wxT('\t') + wxT("alt+q"), wxEmptyString, wxITEM_NORMAL );
+	mnuFile->Append( m_menuItem2 );
 
-	m_menubar1->Append( m_menu1, wxT("&File") );
+	m_menubar1->Append( mnuFile, wxT("&File") );
 
 	m_menu2 = new wxMenu();
 	wxMenuItem* mnuItm_dataFormat;
@@ -47,8 +51,9 @@ udpPlotFrameBase::udpPlotFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	this->Centre( wxBOTH );
 
 	// Connect Events
-	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( udpPlotFrameBase::OnStartStopCapture ), this, mnuItm_startStopCapt->GetId());
-	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( udpPlotFrameBase::OnMenuQuit ), this, m_menuItem2->GetId());
+	mnuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( udpPlotFrameBase::OnStartStopCapture ), this, mnuItm_startStopCapt->GetId());
+	mnuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( udpPlotFrameBase::OnRefresh ), this, mnuItm_refresh->GetId());
+	mnuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( udpPlotFrameBase::OnMenuQuit ), this, m_menuItem2->GetId());
 	m_menu2->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( udpPlotFrameBase::OnMenuItemLoadDataFormatSelected ), this, mnuItm_dataFormat->GetId());
 	m_menu2->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( udpPlotFrameBase::OnConfig ), this, mnuItm_ipport->GetId());
 }

@@ -240,3 +240,8 @@ void udpPlotFrame::RefreshData()
         mpw->Fit();
     });
 }
+
+void udpPlotFrame::OnRefresh(wxCommandEvent& event)
+{
+    RefreshData();
+}

@@ -12,6 +12,7 @@ class udpPlotFrame: public udpPlotFrameBase
 		void OnUdpPlotViewChanged(wxCommandEvent&);
 		void OnConfig(wxCommandEvent& event);
 		void OnStartStopCapture(wxCommandEvent&);
+		void OnRefresh( wxCommandEvent& event );
 	private:
 		std::vector<mpInfoLegend*> mpInfoLegends;
 		std::vector<udpPlotWindow*> mpWindows;

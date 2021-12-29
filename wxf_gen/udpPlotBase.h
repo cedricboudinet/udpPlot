@@ -41,12 +41,13 @@ class udpPlotFrameBase : public wxFrame
 		wxBoxSizer* PlotsBoxSizer;
 		wxStatusBar* m_statusBar1;
 		wxMenuBar* m_menubar1;
-		wxMenu* m_menu1;
+		wxMenu* mnuFile;
 		wxMenuItem* mnuItm_startStopCapt;
 		wxMenu* m_menu2;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnStartStopCapture( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRefresh( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuQuit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuItemLoadDataFormatSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnConfig( wxCommandEvent& event ) { event.Skip(); }
