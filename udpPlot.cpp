@@ -183,41 +183,25 @@ void udpPlotFrame::captureLoop()
      wxMessageBox("Bind failed");
      return;
     }
-    double buffer[2];
     //sockaddr_in from;
     //socklen_t fromlen = sizeof(from);
     printf("Waiting for data\n");
     //int ret = recvfrom(udpSocket, (char*)buffer,2*sizeof(float), 0, reinterpret_cast<sockaddr*>(&from), &fromlen);
     size_t nbBytes = mpFXYVectors.size()*sizeof(double);
     size_t nbCurves = mpFXYVectors.size();
-    Vector_X.resize(0);
-    for(size_t icurve=0;icurve<nbCurves;icurve++)
-    {
-        Vectors_Y[icurve].resize(0);
-    }
-    //for(size_t iPoint=0;iPoint<50; iPoint++)
-    size_t iPoint=0;
+	double * buffer = new double[nbCurves];
+	udpData.reinit(nbCurves);
     while(capturing==1)
     { //data collection
         int ret = recv(udpSocket, (char*)buffer, nbBytes, 0);//, reinterpret_cast<sockaddr*>(&from), &fromlen);
         if (ret <= 0)
             printf("error !!!\n");
         else
-//        printf("%.3f %.3f %.3f\n", buffer[0], buffer[1], buffer[2]);
         {
-            //printf("%.3f %.3f %.3f\n", buffer[0], buffer[1], buffer[2]);
-            for(size_t icurve=0;icurve<nbCurves;icurve++)
-            {
-                Vectors_Y[icurve].push_back(buffer[icurve]);
-            }
-            Vector_X.push_back(iPoint);
-/*            Vector1_X[i]=buffer[0];
-            Vector1_Y[i]=buffer[1];
-            Vector2_X[i]=buffer[0];
-            Vector2_Y[i]=buffer[2];*/
-            iPoint++;
+		udpData.push_back(buffer);
         }
     }
+	delete [] buffer;
     //graph update
     RefreshData();
     close(udpSocket);
@@ -225,14 +209,14 @@ void udpPlotFrame::captureLoop()
 
 void udpPlotFrame::RefreshData()
 {
+	//todo: populate Vector_X and Vector_Y from udpData
+	udpData.getData(Vector_X, Vectors_Y);
     size_t nbCurves = mpFXYVectors.size();
     for(size_t icurve=0;icurve<nbCurves;icurve++)
     {
         mpFXYVectors[icurve]->SetData(Vector_X, Vectors_Y[icurve]);
     }
 
-    //Vector1->SetData(Vector1_X, Vector1_Y);
-    //Vector2->SetData(Vector2_X, Vector2_Y);
     std::for_each(mpWindows.begin(), mpWindows.end(), [](udpPlotWindow* & mpw)
     //for(auto_ptr mpw = mpWindows.begin(); mpw!=mpWindows.end(); mpw++)
     {

@@ -1,6 +1,7 @@
 #include "wxf_gen/udpPlotBase.h"
 #include <vector>
 #include "udpPlotWindow.h"
+#include "udpData.h"
 
 class udpPlotFrame: public udpPlotFrameBase
 {
@@ -27,5 +28,6 @@ class udpPlotFrame: public udpPlotFrameBase
 		void captureLoop();
 		int udpSocket;
 		void RefreshData();
+		udpData_t udpData;
 		//DECLARE_EVENT_TABLE()
 };
