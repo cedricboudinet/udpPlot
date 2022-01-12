@@ -23,9 +23,9 @@
 #include <wx/frame.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/valgen.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
+#include <wx/valgen.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -43,7 +43,7 @@ class udpPlotFrameBase : public wxFrame
 		wxMenuBar* m_menubar1;
 		wxMenu* mnuFile;
 		wxMenuItem* mnuItm_startStopCapt;
-		wxMenu* m_menu2;
+		wxMenu* mnuConfig;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnStartStopCapture( wxCommandEvent& event ) { event.Skip(); }
@@ -51,6 +51,7 @@ class udpPlotFrameBase : public wxFrame
 		virtual void OnMenuQuit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuItemLoadDataFormatSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnConfig( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnConfAcq( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
@@ -58,6 +59,29 @@ class udpPlotFrameBase : public wxFrame
 		udpPlotFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("udpPlot"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~udpPlotFrameBase();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class AcquisitionDialog
+///////////////////////////////////////////////////////////////////////////////
+class AcquisitionDialog : public wxDialog
+{
+	private:
+
+	protected:
+		wxStaticText* m_staticText3;
+		wxStaticText* m_staticText4;
+		wxTextCtrl* m_textCtrl4;
+		wxButton* m_button3;
+		wxButton* m_button4;
+
+	public:
+		wxTextCtrl* bufferSizeValue;
+
+		AcquisitionDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("udpPlot: Acquisition configuration"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+
+		~AcquisitionDialog();
 
 };
 

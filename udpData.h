@@ -20,6 +20,7 @@ class udpData_t
 		void push_back(double *);
 		void reinit(size_t seriesCount); 
 		void getData(std::vector<double> & vectorX, std::vector< std::vector<double> > & vectorsY);
+		size_t maxBufferSize = 10000; //TODO
 
 	private:
 		size_t _seriesCount;
