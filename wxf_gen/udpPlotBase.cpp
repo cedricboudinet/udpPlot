@@ -68,35 +68,66 @@ ConfigDialog::ConfigDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 
-	wxGridSizer* gSizer1;
-	gSizer1 = new wxGridSizer( 3, 2, 0, 0 );
+	wxBoxSizer* bSizer2;
+	bSizer2 = new wxBoxSizer( wxVERTICAL );
+
+	wxFlexGridSizer* fgSizer3;
+	fgSizer3 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer3->SetFlexibleDirection( wxBOTH );
+	fgSizer3->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
 	m_staticText1 = new wxStaticText( this, wxID_ANY, wxT("Listen IP"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
 	m_staticText1->Wrap( -1 );
-	gSizer1->Add( m_staticText1, 1, wxALIGN_CENTER|wxALL|wxEXPAND, 5 );
+	fgSizer3->Add( m_staticText1, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 
-	IP_ctrl = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	gSizer1->Add( IP_ctrl, 0, wxALL, 5 );
+	IP_ctrl = new wxTextCtrl( this, wxID_ANY, wxT("0.0.0.0"), wxDefaultPosition, wxDefaultSize, 0 );
+	#ifdef __WXGTK__
+	if ( !IP_ctrl->HasFlag( wxTE_MULTILINE ) )
+	{
+	IP_ctrl->SetMaxLength( 15 );
+	}
+	#else
+	IP_ctrl->SetMaxLength( 15 );
+	#endif
+	IP_ctrl->Enable( false );
+
+	fgSizer3->Add( IP_ctrl, 1, wxALL|wxEXPAND, 5 );
 
 	m_staticText2 = new wxStaticText( this, wxID_ANY, wxT("Port"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
 	m_staticText2->Wrap( -1 );
-	gSizer1->Add( m_staticText2, 0, wxALIGN_CENTER|wxALL|wxEXPAND, 5 );
+	fgSizer3->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 
-	PORT_ctrl = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	PORT_ctrl->SetValidator( wxGenericValidator( &port_value ) );
+	PORT_ctrl = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 65535, 0 );
+	fgSizer3->Add( PORT_ctrl, 1, wxALL|wxEXPAND, 5 );
 
-	gSizer1->Add( PORT_ctrl, 0, wxALL, 5 );
+
+	bSizer2->Add( fgSizer3, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bSizer4;
+	bSizer4 = new wxBoxSizer( wxHORIZONTAL );
+
+
+	bSizer4->Add( 0, 0, 1, wxEXPAND, 5 );
 
 	OK = new wxButton( this, wxID_OK, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-	gSizer1->Add( OK, 0, wxALIGN_CENTER|wxALL, 5 );
+	bSizer4->Add( OK, 0, wxALIGN_CENTER|wxALL, 5 );
+
+
+	bSizer4->Add( 0, 0, 1, wxEXPAND, 5 );
 
 	m_button2 = new wxButton( this, wxID_CANCEL, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-	gSizer1->Add( m_button2, 0, wxALIGN_CENTER|wxALL, 5 );
+	bSizer4->Add( m_button2, 0, wxALIGN_CENTER|wxALL, 5 );
 
 
-	this->SetSizer( gSizer1 );
+	bSizer4->Add( 0, 0, 1, wxEXPAND, 5 );
+
+
+	bSizer2->Add( bSizer4, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer2 );
 	this->Layout();
-	gSizer1->Fit( this );
+	bSizer2->Fit( this );
 
 	this->Centre( wxBOTH );
 }

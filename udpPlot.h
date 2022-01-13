@@ -29,5 +29,6 @@ class udpPlotFrame: public udpPlotFrameBase
 		int udpSocket;
 		void RefreshData();
 		udpData_t udpData;
+		uint16_t _listenPort=43210;
 		//DECLARE_EVENT_TABLE()
 };

@@ -23,7 +23,7 @@
 #include <wx/frame.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/valgen.h>
+#include <wx/spinctrl.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 
@@ -76,8 +76,7 @@ class ConfigDialog : public wxDialog
 
 	public:
 		wxTextCtrl* IP_ctrl;
-		wxTextCtrl* PORT_ctrl;
-		int port_value;
+		wxSpinCtrl* PORT_ctrl;
 
 		ConfigDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("udpPlot: IP Config"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
 

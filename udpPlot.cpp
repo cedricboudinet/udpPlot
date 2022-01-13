@@ -139,15 +139,13 @@ void udpPlotFrame::postInit()
 
 void udpPlotFrame::OnConfig(wxCommandEvent& event)
 {
-    ConfigDialog * dlg=new ConfigDialog(this, wxID_ANY);
-    if(dlg->ShowModal()==wxID_OK)
-    {
-        std::cout<<"validated"<<std::endl;
-        std::cout<<"Listen IP="<<dlg->IP_ctrl->GetValue()<<" ";
-        std::cout<<"Port="<<dlg->PORT_ctrl->GetValue()<<std::endl;
-    }
-    std::cout<<"ended"<<std::endl;
-    dlg->Destroy();
+	ConfigDialog * dlg=new ConfigDialog(this, wxID_ANY);
+	dlg->PORT_ctrl->SetValue(_listenPort);
+	if(dlg->ShowModal()==wxID_OK)
+	{
+		_listenPort = dlg->PORT_ctrl->GetValue();
+	}
+	dlg->Destroy();
 }
 
 void udpPlotFrame::OnStartStopCapture(wxCommandEvent& event)
@@ -173,9 +171,9 @@ void udpPlotFrame::captureLoop()
 
     udpSocket = socket(AF_INET, SOCK_DGRAM, 0); //IPPROTO_UDP);
     sockaddr_in addr;
-    addr.sin_addr.s_addr = INADDR_ANY; // permet d'écouter sur toutes les interfaces locales
-    addr.sin_port = htons(43210); // toujours penser à traduire le port en endianess réseau
-    addr.sin_family = AF_INET; // notre adresse est IPv4
+    addr.sin_addr.s_addr = INADDR_ANY; // listenning address
+    addr.sin_port = htons(_listenPort); // port number with network byte order
+    addr.sin_family = AF_INET; // IPv4
     int res = bind(udpSocket, reinterpret_cast<sockaddr*>(&addr), sizeof(addr));
     if(res!=0)
     {
