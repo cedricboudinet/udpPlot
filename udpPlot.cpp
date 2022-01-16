@@ -234,14 +234,14 @@ void udpPlotFrame::OnConfAcq( wxCommandEvent& event )
 {
 	AcquisitionDialog * dlg=new AcquisitionDialog(this, wxID_ANY);
 	wxString mystring;
-	mystring << udpData.maxBufferSize;
+	mystring << udpData.getMaxBufferSize();
 	dlg->bufferSizeValue->SetValue(mystring);
 	long myLong;
 	if(dlg->ShowModal()==wxID_OK)
 	{
 		std::cout<<"validated"<<std::endl;
 		dlg->bufferSizeValue->GetValue().ToLong(&myLong);
-		udpData.maxBufferSize = myLong;
+		udpData.setMaxBufferSize(myLong);
 	}
 	std::cout<<"ended"<<std::endl;
 	dlg->Destroy();
