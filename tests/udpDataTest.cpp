@@ -37,6 +37,21 @@ TEST(UDP_DATA_TEST, FirstTest)
 	std::vector<double> valsX;
 	valsYs.resize(5);
 	udpData.getData(valsX, valsYs);
+	
+	//checking buffer size
+	udpData.getData(valsX, valsYs);
+	CHECK_EQUAL(10, valsX.size());
+	udpData.setMaxBufferSize(2);
+	udpData.push_back(buffer);
+	udpData.getData(valsX, valsYs);
+	CHECK_EQUAL(2, valsX.size());
+	udpData._lockDeletion=true; //setting up deletion protection
+	udpData.push_back(buffer);
+	udpData.push_back(buffer);
+	CHECK_EQUAL(4, udpData._data.size());
+	udpData._lockDeletion=false; //unsetting protection
+	udpData.push_back(buffer);
+	CHECK_EQUAL(2, udpData._data.size());
 }
 
 int main(int ac, char** av)

@@ -20,10 +20,14 @@ class udpData_t
 		void push_back(double *);
 		void reinit(size_t seriesCount); 
 		void getData(std::vector<double> & vectorX, std::vector< std::vector<double> > & vectorsY);
+		void setMaxBufferSize(size_t);
+		size_t getMaxBufferSize();
 
 	private:
 		size_t _seriesCount;
 		std::deque< std::vector<double> > _data;
+		size_t _maxBufferSize = 10000; //TODO
+		bool _lockDeletion=false;
 		
 };
 
