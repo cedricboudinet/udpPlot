@@ -6,15 +6,19 @@
  * License:
  **************************************************************/
 #include "CppUTest/CommandLineTestRunner.h"
-#define UDP_DATA_TEST_FRIENDS friend class TEST_UDP_DATA_TEST_FirstTest_Test
+#define UDP_DATA_TEST_FRIENDS \
+	friend class TEST_UDP_DATA_TEST_FirstTest_Test; \
+	friend class TEST_UDP_DATA_TEST_Trigger_Test;
 #include "../udpData.h"
 #include <stdio.h>
+#include <iostream>
 TEST_GROUP(UDP_DATA_TEST)
 {
 };
 
 TEST(UDP_DATA_TEST, FirstTest)
 {
+	//std::cout<<"basic test"<<std::endl;
 	udpData_t udpData;
 	udpData.reinit(5);
 	double buffer[5];
@@ -52,6 +56,58 @@ TEST(UDP_DATA_TEST, FirstTest)
 	udpData._lockDeletion=false; //unsetting protection
 	udpData.push_back(buffer);
 	CHECK_EQUAL(2, udpData._data.size());
+}
+
+TEST(UDP_DATA_TEST, Trigger)
+{
+	//std::cout<<"trigger test"<<std::endl;
+	udpData_t udpData;
+	udpData.reinit(5);
+	double buffer[5];
+	//checking trigger rising
+	buffer[0]=0; udpData.push_back(buffer);
+	CHECK_EQUAL(false, udpData._trigged);
+	buffer[0]=-1; udpData.push_back(buffer);
+	CHECK_EQUAL(false, udpData._trigged);
+	buffer[0]= 1; udpData.push_back(buffer);
+	CHECK_EQUAL(true, udpData._trigged);
+	udpData._trigged=false;
+	buffer[0]=-1; udpData.push_back(buffer);
+	CHECK_EQUAL(false, udpData._trigged);
+	
+	//trigger falling
+	udpData._triggerSlope=TRIGGER_SLOPE_FALLING;
+	buffer[0]=1; udpData.push_back(buffer);
+	CHECK_EQUAL(false, udpData._trigged);
+	buffer[0]=-1; udpData.push_back(buffer);
+	CHECK_EQUAL(true, udpData._trigged);
+
+	//trigger both
+	udpData._trigged=false;
+	udpData._triggerSlope=TRIGGER_SLOPE_BOTH;
+	buffer[0]=1;udpData.push_back(buffer);
+	CHECK_EQUAL(true, udpData._trigged);
+	udpData._trigged=false;
+	buffer[0]=-1;udpData.push_back(buffer);
+	CHECK_EQUAL(true, udpData._trigged);
+
+	//trigger level
+	buffer[0]=1;udpData.push_back(buffer);
+	udpData._trigged=false;
+	udpData._triggerLevel=10;
+	buffer[0]=1; udpData.push_back(buffer);
+	CHECK_EQUAL(false, udpData._trigged);
+	buffer[0]=11;udpData.push_back(buffer);
+	CHECK_EQUAL(true, udpData._trigged);
+	
+	//trigger channel
+	udpData.setTrigger(50.0, 1, TRIGGER_SLOPE_RISING);
+	udpData._trigged=false;
+	buffer[0]=100; udpData.push_back(buffer);
+	CHECK_EQUAL(false, udpData._trigged);
+	buffer[1]=100; udpData.push_back(buffer);
+	CHECK_EQUAL(true, udpData._trigged);
+
 }
 
 int main(int ac, char** av)

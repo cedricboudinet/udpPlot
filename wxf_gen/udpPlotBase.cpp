@@ -73,8 +73,11 @@ AcquisitionDialog::AcquisitionDialog( wxWindow* parent, wxWindowID id, const wxS
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 
+	wxBoxSizer* bSizer4;
+	bSizer4 = new wxBoxSizer( wxVERTICAL );
+
 	wxGridSizer* gSizer2;
-	gSizer2 = new wxGridSizer( 3, 2, 0, 0 );
+	gSizer2 = new wxGridSizer( 2, 2, 0, 0 );
 
 	m_staticText3 = new wxStaticText( this, wxID_ANY, wxT("Buffer size"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText3->Wrap( -1 );
@@ -92,16 +95,77 @@ AcquisitionDialog::AcquisitionDialog( wxWindow* parent, wxWindowID id, const wxS
 
 	gSizer2->Add( m_textCtrl4, 0, wxALL, 5 );
 
+
+	bSizer4->Add( gSizer2, 0, wxEXPAND, 5 );
+
+	wxStaticBoxSizer* sbSizer1;
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Trigger") ), wxVERTICAL );
+
+	wxGridSizer* gSizer4;
+	gSizer4 = new wxGridSizer( 3, 2, 0, 0 );
+
+	m_staticText5 = new wxStaticText( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Source"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5->Wrap( -1 );
+	gSizer4->Add( m_staticText5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+	triggerSource = new wxComboBox( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY );
+	triggerSource->Append( wxT("Channel1") );
+	triggerSource->Append( wxT("Channel2") );
+	triggerSource->SetSelection( 0 );
+	gSizer4->Add( triggerSource, 1, wxALL|wxEXPAND, 5 );
+
+	m_staticText6 = new wxStaticText( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Level"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText6->Wrap( -1 );
+	gSizer4->Add( m_staticText6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+	triggerLevel = new wxSpinCtrlDouble( sbSizer1->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -1e+06, 1e+06, 0, 1 );
+	triggerLevel->SetDigits( 6 );
+	gSizer4->Add( triggerLevel, 1, wxALL, 5 );
+
+	m_staticText7 = new wxStaticText( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Slope"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7->Wrap( -1 );
+	gSizer4->Add( m_staticText7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+	triggerSlope = new wxComboBox( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY );
+	triggerSlope->Append( wxT("Rising") );
+	triggerSlope->Append( wxT("Falling") );
+	triggerSlope->Append( wxT("Both") );
+	triggerSlope->SetSelection( 0 );
+	triggerSlope->Enable( false );
+
+	gSizer4->Add( triggerSlope, 0, wxALL|wxEXPAND, 5 );
+
+
+	sbSizer1->Add( gSizer4, 1, wxEXPAND, 5 );
+
+
+	bSizer4->Add( sbSizer1, 1, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	wxBoxSizer* bSizer5;
+	bSizer5 = new wxBoxSizer( wxHORIZONTAL );
+
+
+	bSizer5->Add( 0, 0, 1, wxEXPAND, 5 );
+
 	m_button3 = new wxButton( this, wxID_OK, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-	gSizer2->Add( m_button3, 0, wxALL, 5 );
+	bSizer5->Add( m_button3, 0, wxALL, 5 );
+
+
+	bSizer5->Add( 0, 0, 1, wxEXPAND, 5 );
 
 	m_button4 = new wxButton( this, wxID_CANCEL, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-	gSizer2->Add( m_button4, 0, wxALL, 5 );
+	bSizer5->Add( m_button4, 0, wxALL, 5 );
 
 
-	this->SetSizer( gSizer2 );
+	bSizer5->Add( 0, 0, 1, wxEXPAND, 5 );
+
+
+	bSizer4->Add( bSizer5, 0, wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer4 );
 	this->Layout();
-	gSizer2->Fit( this );
+	bSizer4->Fit( this );
 
 	this->Centre( wxBOTH );
 }

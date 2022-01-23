@@ -23,9 +23,11 @@
 #include <wx/frame.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/combobox.h>
+#include <wx/spinctrl.h>
+#include <wx/statbox.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
-#include <wx/spinctrl.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -73,11 +75,17 @@ class AcquisitionDialog : public wxDialog
 		wxStaticText* m_staticText3;
 		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textCtrl4;
+		wxStaticText* m_staticText5;
+		wxStaticText* m_staticText6;
+		wxStaticText* m_staticText7;
+		wxComboBox* triggerSlope;
 		wxButton* m_button3;
 		wxButton* m_button4;
 
 	public:
 		wxTextCtrl* bufferSizeValue;
+		wxComboBox* triggerSource;
+		wxSpinCtrlDouble* triggerLevel;
 
 		AcquisitionDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("udpPlot: Acquisition configuration"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
 
