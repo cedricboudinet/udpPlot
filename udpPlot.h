@@ -31,5 +31,6 @@ class udpPlotFrame: public udpPlotFrameBase
 		void RefreshData();
 		udpData_t udpData;
 		uint16_t _listenPort=43210;
+		wxArrayString _channelList;
 		//DECLARE_EVENT_TABLE()
 };

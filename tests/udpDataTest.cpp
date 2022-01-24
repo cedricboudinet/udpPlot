@@ -64,49 +64,83 @@ TEST(UDP_DATA_TEST, Trigger)
 	udpData_t udpData;
 	udpData.reinit(5);
 	double buffer[5];
+	udpData.setMaxBufferSize(10);
 	//checking trigger rising
 	buffer[0]=0; udpData.push_back(buffer);
-	CHECK_EQUAL(false, udpData._trigged);
+	CHECK_EQUAL(false, udpData.trigged());
 	buffer[0]=-1; udpData.push_back(buffer);
-	CHECK_EQUAL(false, udpData._trigged);
+	CHECK_EQUAL(false, udpData.trigged());
 	buffer[0]= 1; udpData.push_back(buffer);
-	CHECK_EQUAL(true, udpData._trigged);
-	udpData._trigged=false;
+	CHECK_EQUAL(true, udpData.trigged());
+	udpData.resetTrigger();
 	buffer[0]=-1; udpData.push_back(buffer);
-	CHECK_EQUAL(false, udpData._trigged);
+	CHECK_EQUAL(false, udpData.trigged());
 	
 	//trigger falling
-	udpData._triggerSlope=TRIGGER_SLOPE_FALLING;
+	udpData.setTrigger(0,0, TRIGGER_SLOPE_FALLING);
 	buffer[0]=1; udpData.push_back(buffer);
-	CHECK_EQUAL(false, udpData._trigged);
+	CHECK_EQUAL(false, udpData.trigged());
 	buffer[0]=-1; udpData.push_back(buffer);
-	CHECK_EQUAL(true, udpData._trigged);
+	CHECK_EQUAL(true, udpData.trigged());
 
 	//trigger both
-	udpData._trigged=false;
-	udpData._triggerSlope=TRIGGER_SLOPE_BOTH;
+	udpData.resetTrigger();
+	udpData.setTrigger(0,0, TRIGGER_SLOPE_BOTH);
 	buffer[0]=1;udpData.push_back(buffer);
-	CHECK_EQUAL(true, udpData._trigged);
-	udpData._trigged=false;
+	CHECK_EQUAL(true, udpData.trigged());
+	udpData.resetTrigger();
 	buffer[0]=-1;udpData.push_back(buffer);
-	CHECK_EQUAL(true, udpData._trigged);
+	CHECK_EQUAL(true, udpData.trigged());
 
 	//trigger level
 	buffer[0]=1;udpData.push_back(buffer);
-	udpData._trigged=false;
-	udpData._triggerLevel=10;
+	udpData.resetTrigger();
+	udpData.setTrigger(10, 0, TRIGGER_SLOPE_RISING);
 	buffer[0]=1; udpData.push_back(buffer);
-	CHECK_EQUAL(false, udpData._trigged);
+	CHECK_EQUAL(false, udpData.trigged());
 	buffer[0]=11;udpData.push_back(buffer);
-	CHECK_EQUAL(true, udpData._trigged);
+	CHECK_EQUAL(true, udpData.trigged());
 	
 	//trigger channel
 	udpData.setTrigger(50.0, 1, TRIGGER_SLOPE_RISING);
-	udpData._trigged=false;
+	udpData.resetTrigger();
 	buffer[0]=100; udpData.push_back(buffer);
-	CHECK_EQUAL(false, udpData._trigged);
+	CHECK_EQUAL(false, udpData.trigged());
 	buffer[1]=100; udpData.push_back(buffer);
-	CHECK_EQUAL(true, udpData._trigged);
+	CHECK_EQUAL(true, udpData.trigged());
+
+	//checking size when trigged
+	udpData.resetTrigger();
+	udpData.setTrigger(50.0, 0, TRIGGER_SLOPE_RISING);
+	buffer[0]=0; udpData.push_back(buffer);
+	CHECK_EQUAL(10, udpData._data.size());
+	buffer[0]=100; udpData.push_back(buffer);
+	buffer[0]=0; udpData.push_back(buffer);
+	CHECK_EQUAL(12, udpData._data.size());
+	udpData.resetTrigger();
+	buffer[0]=0; udpData.push_back(buffer);
+	CHECK_EQUAL(10, udpData._data.size());
+
+	//checking trigger index
+	udpData.resetTrigger();
+	buffer[0]=0; udpData.push_back(buffer);
+	buffer[0]=100; udpData.push_back(buffer);
+	CHECK_EQUAL(11, udpData._triggerIndex);
+	CHECK_EQUAL(11, udpData._data.size());
+
+	//checking if double trigger doesn't overwrites the first one
+	buffer[0]=0; udpData.push_back(buffer);
+	buffer[0]=100; udpData.push_back(buffer);
+	CHECK_EQUAL(13, udpData._data.size());
+	CHECK_EQUAL(11, udpData._triggerIndex);
+
+	//checking trigger config
+	double level=0; int channel=0; trigger_slope_t triggerSlope=TRIGGER_SLOPE_RISING;
+	udpData.setTrigger(25.3, 7, TRIGGER_SLOPE_BOTH);
+	udpData.getTrigger(&level, &channel, &triggerSlope);
+	CHECK_EQUAL(25.3, level);
+	CHECK_EQUAL(7, channel);
+	CHECK_EQUAL(TRIGGER_SLOPE_BOTH, triggerSlope);
 
 }
 

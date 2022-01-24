@@ -29,16 +29,21 @@ class udpData_t
 		void setMaxBufferSize(size_t);
 		size_t getMaxBufferSize();
 		void setTrigger(double level, int channel, trigger_slope_t trigger_slope);
+		void getTrigger(double * level, int * channel, trigger_slope_t * trigger_slope);
+		bool trigged() { return _trigged;}
+		void resetTrigger() { _trigged=false;}
 
 	private:
 		size_t _seriesCount;
 		std::deque< std::vector<double> > _data;
 		size_t _maxBufferSize = 10000; //TODO
 		bool _lockDeletion=false;
+
 		bool _trigged=false;
 		double _triggerLevel=0.0;
 		size_t _triggerChannel=0;
 		trigger_slope_t _triggerSlope = TRIGGER_SLOPE_RISING;
+		size_t _triggerIndex=0;
 };
 
 #endif // UDPDATA_H

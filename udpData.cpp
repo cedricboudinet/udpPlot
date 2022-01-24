@@ -12,7 +12,7 @@ void udpData_t::push_back(double * buffer)
 	std::vector<double> row(buffer, buffer+_seriesCount);
 	_data.push_back(row);
 	size_t size=_data.size();
-	if(size>1)
+	if((size>1) && (!_trigged))
 	{
 		double before = (*(_data.end()-2))[_triggerChannel];
 		double after = buffer[_triggerChannel];
@@ -23,10 +23,13 @@ void udpData_t::push_back(double * buffer)
 			signal_slope=TRIGGER_SLOPE_FALLING;
 		
 		if(signal_slope & _triggerSlope)
+		{
+			_triggerIndex=_data.size();
 			_trigged=true; 
+		}
 		//printf("%.3f %.3f %.3f %d\n", before, after, _triggerLevel, signal_slope);
 	}
-	if(_lockDeletion==false) //also check if trigger is false
+	if((_lockDeletion==false) && (_trigged==false)) //also check if trigger is false
 		if(size > _maxBufferSize)
 		{
 			_data.erase(_data.begin(), _data.begin()+size-_maxBufferSize);
@@ -62,4 +65,11 @@ void udpData_t::setTrigger(double level, int channel, trigger_slope_t trigger_sl
 	_triggerLevel = level;
 	_triggerChannel = channel;
 	_triggerSlope =trigger_slope;
+}
+
+void udpData_t::getTrigger(double * level, int * channel, trigger_slope_t * trigger_slope)
+{
+	*level = _triggerLevel;
+	*channel = _triggerChannel;
+	*trigger_slope = _triggerSlope;
 }

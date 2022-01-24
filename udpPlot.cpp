@@ -88,6 +88,7 @@ void udpPlotFrame::OnMenuItemLoadDataFormatSelected(wxCommandEvent& event)
 	std::cout<<"nb curves:"<<nbCurves<<std::endl;
 	std::cout<<"Curves defs"<<std::endl;
 	Vectors_Y.resize(nbCurves);
+	_channelList.resize(nbCurves);
 	for(int i=0;i<nbCurves;i++)
 	{
 		std::string name=root["curves"]["defs"][i]["Name"].asString();
@@ -100,6 +101,7 @@ void udpPlotFrame::OnMenuItemLoadDataFormatSelected(wxCommandEvent& event)
 		FXYvector->SetContinuity(true);
 		mpWindows[dest]->AddLayer(FXYvector);
 		mpFXYVectors.push_back(FXYvector);
+		_channelList[i]=name;
 	}
 	PlotsBoxSizer->Layout();
 }
@@ -234,12 +236,25 @@ void udpPlotFrame::OnConfAcq( wxCommandEvent& event )
 	wxString mystring;
 	mystring << udpData.getMaxBufferSize();
 	dlg->bufferSizeValue->SetValue(mystring);
+	double triggerLevel;
+	int triggerChannel;
+	trigger_slope_t triggerSlope;
+	udpData.getTrigger(&triggerLevel, &triggerChannel, &triggerSlope);
+	dlg->triggerSlope->SetSelection(triggerSlope-1);
+	dlg->triggerLevel->SetValue(triggerLevel);
 	long myLong;
+	//configuring channel list
+	dlg->triggerSource->Set(_channelList);
+	dlg->triggerSource->SetSelection(triggerChannel);
 	if(dlg->ShowModal()==wxID_OK)
 	{
 		std::cout<<"validated"<<std::endl;
 		dlg->bufferSizeValue->GetValue().ToLong(&myLong);
 		udpData.setMaxBufferSize(myLong);
+		triggerSlope = (trigger_slope_t)(dlg->triggerSlope->GetSelection()+1);
+		triggerLevel = dlg->triggerLevel->GetValue();
+		triggerChannel = dlg->triggerSource->GetSelection();
+		udpData.setTrigger(triggerLevel, triggerChannel, triggerSlope);
 	}
 	std::cout<<"ended"<<std::endl;
 	dlg->Destroy();

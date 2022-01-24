@@ -109,8 +109,6 @@ AcquisitionDialog::AcquisitionDialog( wxWindow* parent, wxWindowID id, const wxS
 	gSizer4->Add( m_staticText5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
 	triggerSource = new wxComboBox( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY );
-	triggerSource->Append( wxT("Channel1") );
-	triggerSource->Append( wxT("Channel2") );
 	triggerSource->SetSelection( 0 );
 	gSizer4->Add( triggerSource, 1, wxALL|wxEXPAND, 5 );
 
@@ -131,8 +129,6 @@ AcquisitionDialog::AcquisitionDialog( wxWindow* parent, wxWindowID id, const wxS
 	triggerSlope->Append( wxT("Falling") );
 	triggerSlope->Append( wxT("Both") );
 	triggerSlope->SetSelection( 0 );
-	triggerSlope->Enable( false );
-
 	gSizer4->Add( triggerSlope, 0, wxALL|wxEXPAND, 5 );
 
 
