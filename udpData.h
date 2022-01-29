@@ -32,6 +32,7 @@ class udpData_t
 		void getTrigger(double * level, int * channel, trigger_slope_t * trigger_slope);
 		bool trigged() { return _trigged;}
 		void resetTrigger() { _trigged=false;}
+		void setTriggerCallBack(void (* function)(void*), void * obj);
 
 	private:
 		size_t _seriesCount;
@@ -44,6 +45,8 @@ class udpData_t
 		size_t _triggerChannel=0;
 		trigger_slope_t _triggerSlope = TRIGGER_SLOPE_RISING;
 		size_t _triggerIndex=0;
+		void * _triggerCallBackArg;
+		void (*_triggerCallBack)(void*) =NULL;
 };
 
 #endif // UDPDATA_H

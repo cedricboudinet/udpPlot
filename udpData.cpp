@@ -26,6 +26,8 @@ void udpData_t::push_back(double * buffer)
 		{
 			_triggerIndex=_data.size();
 			_trigged=true; 
+			if(_triggerCallBack != NULL)
+				_triggerCallBack(_triggerCallBackArg);
 		}
 		//printf("%.3f %.3f %.3f %d\n", before, after, _triggerLevel, signal_slope);
 	}
@@ -72,4 +74,10 @@ void udpData_t::getTrigger(double * level, int * channel, trigger_slope_t * trig
 	*level = _triggerLevel;
 	*channel = _triggerChannel;
 	*trigger_slope = _triggerSlope;
+}
+
+void udpData_t::setTriggerCallBack(void (*function)(void*), void * obj)
+{
+	_triggerCallBack=function;
+	_triggerCallBackArg=obj;
 }

@@ -12,6 +12,21 @@
 #include "../udpData.h"
 #include <stdio.h>
 #include <iostream>
+
+class CallBackClass_t
+{
+	public:
+		void OnTrig() {
+			called=true;
+			//std::cout<<"triggCallback"<<std::endl;
+		}
+		bool called=false;
+};
+void CallBackFunction(CallBackClass_t * cbc)
+{
+	cbc->OnTrig();
+}
+
 TEST_GROUP(UDP_DATA_TEST)
 {
 };
@@ -141,6 +156,16 @@ TEST(UDP_DATA_TEST, Trigger)
 	CHECK_EQUAL(25.3, level);
 	CHECK_EQUAL(7, channel);
 	CHECK_EQUAL(TRIGGER_SLOPE_BOTH, triggerSlope);
+
+	//trigger callback test
+	CallBackClass_t CallBackClass;
+	udpData.setTriggerCallBack((void(*)(void*))CallBackFunction, &CallBackClass);
+	udpData.resetTrigger();
+	udpData.setTrigger(25.3, 0, TRIGGER_SLOPE_BOTH);
+	buffer[0]=0; udpData.push_back(buffer);
+	buffer[0]=100; udpData.push_back(buffer);
+	CHECK_EQUAL(true, udpData.trigged());
+	CHECK_EQUAL(true, CallBackClass.called);
 
 }
 
