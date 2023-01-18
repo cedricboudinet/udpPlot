@@ -28,6 +28,10 @@ void udpData_t::push_back(double * buffer)
 			_trigged=true; 
 			if(_triggerCallBack != NULL)
 				_triggerCallBack(_triggerCallBackArg);
+			//TODO
+			// wait to have enough data before calling the callback
+			// hint: take into account the _triggerHorizontalPosition
+			// parameter
 		}
 		//printf("%.3f %.3f %.3f %d\n", before, after, _triggerLevel, signal_slope);
 	}
@@ -40,7 +44,7 @@ void udpData_t::push_back(double * buffer)
 }
 void udpData_t::getData(std::vector<double> & vectorX, std::vector< std::vector<double> > & vectorsY)
 {
-	int nbVals=_data.size();
+	size_t nbVals=_data.size();
 	vectorX.resize(nbVals);
 	for(size_t i=0;i<_seriesCount;i++)
 		vectorsY[i].resize(nbVals);
@@ -62,18 +66,22 @@ size_t udpData_t::getMaxBufferSize()
 	return _maxBufferSize;
 }
 
-void udpData_t::setTrigger(double level, int channel, trigger_slope_t trigger_slope)
+void udpData_t::setTrigger(double level, int channel, trigger_slope_t trigger_slope, double horizontalPostion)
 {
 	_triggerLevel = level;
 	_triggerChannel = channel;
 	_triggerSlope =trigger_slope;
+	_triggerHorizontalPosition = horizontalPostion;
+	std::cout<<horizontalPostion<<std::endl;
 }
 
-void udpData_t::getTrigger(double * level, int * channel, trigger_slope_t * trigger_slope)
+void udpData_t::getTrigger(double * level, int * channel, trigger_slope_t * trigger_slope, double * horizontalPostion)
 {
 	*level = _triggerLevel;
 	*channel = _triggerChannel;
 	*trigger_slope = _triggerSlope;
+	*horizontalPostion = _triggerHorizontalPosition;
+	std::cout<<(*horizontalPostion)<<std::endl;
 }
 
 void udpData_t::setTriggerCallBack(void (*function)(void*), void * obj)

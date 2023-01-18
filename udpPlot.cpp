@@ -11,6 +11,7 @@ udpPlotFrame::udpPlotFrame( wxWindow* parent, wxWindowID id, const wxString& tit
 	udpPlotFrameBase(parent, id, title, pos, size, style)
 {
 	postInit();
+	udpData.setTriggerCallBack((void(*)(void*))triggerCallBack, this);
 }
 
 void udpPlotFrame::OnMenuQuit( wxCommandEvent& event )
@@ -238,10 +239,12 @@ void udpPlotFrame::OnConfAcq( wxCommandEvent& event )
 	dlg->bufferSizeValue->SetValue(mystring);
 	double triggerLevel;
 	int triggerChannel;
+	double triggerHorizontalPosition;
 	trigger_slope_t triggerSlope;
-	udpData.getTrigger(&triggerLevel, &triggerChannel, &triggerSlope);
+	udpData.getTrigger(&triggerLevel, &triggerChannel, &triggerSlope, &triggerHorizontalPosition);
 	dlg->triggerSlope->SetSelection(triggerSlope-1);
 	dlg->triggerLevel->SetValue(triggerLevel);
+	dlg->triggerHorizontalPosition->SetValue(triggerHorizontalPosition);
 	long myLong;
 	//configuring channel list
 	dlg->triggerSource->Set(_channelList);
@@ -254,8 +257,18 @@ void udpPlotFrame::OnConfAcq( wxCommandEvent& event )
 		triggerSlope = (trigger_slope_t)(dlg->triggerSlope->GetSelection()+1);
 		triggerLevel = dlg->triggerLevel->GetValue();
 		triggerChannel = dlg->triggerSource->GetSelection();
-		udpData.setTrigger(triggerLevel, triggerChannel, triggerSlope);
+		triggerHorizontalPosition = dlg->triggerHorizontalPosition->GetValue();
+		udpData.setTrigger(triggerLevel, triggerChannel, triggerSlope, triggerHorizontalPosition);
 	}
 	std::cout<<"ended"<<std::endl;
 	dlg->Destroy();
+}
+
+void udpPlotFrame::OnTrigger()
+{
+	udpData.resetTrigger();
+}
+void triggerCallBack(udpPlotFrame * frame)
+{//TODO : create thread
+	frame->OnTrigger();
 }

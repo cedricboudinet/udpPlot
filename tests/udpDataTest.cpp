@@ -92,7 +92,7 @@ TEST(UDP_DATA_TEST, Trigger)
 	CHECK_EQUAL(false, udpData.trigged());
 	
 	//trigger falling
-	udpData.setTrigger(0,0, TRIGGER_SLOPE_FALLING);
+	udpData.setTrigger(0,0, TRIGGER_SLOPE_FALLING, 0);
 	buffer[0]=1; udpData.push_back(buffer);
 	CHECK_EQUAL(false, udpData.trigged());
 	buffer[0]=-1; udpData.push_back(buffer);
@@ -100,7 +100,7 @@ TEST(UDP_DATA_TEST, Trigger)
 
 	//trigger both
 	udpData.resetTrigger();
-	udpData.setTrigger(0,0, TRIGGER_SLOPE_BOTH);
+	udpData.setTrigger(0,0, TRIGGER_SLOPE_BOTH, 0);
 	buffer[0]=1;udpData.push_back(buffer);
 	CHECK_EQUAL(true, udpData.trigged());
 	udpData.resetTrigger();
@@ -110,14 +110,14 @@ TEST(UDP_DATA_TEST, Trigger)
 	//trigger level
 	buffer[0]=1;udpData.push_back(buffer);
 	udpData.resetTrigger();
-	udpData.setTrigger(10, 0, TRIGGER_SLOPE_RISING);
+	udpData.setTrigger(10, 0, TRIGGER_SLOPE_RISING, 0);
 	buffer[0]=1; udpData.push_back(buffer);
 	CHECK_EQUAL(false, udpData.trigged());
 	buffer[0]=11;udpData.push_back(buffer);
 	CHECK_EQUAL(true, udpData.trigged());
 	
 	//trigger channel
-	udpData.setTrigger(50.0, 1, TRIGGER_SLOPE_RISING);
+	udpData.setTrigger(50.0, 1, TRIGGER_SLOPE_RISING, 0);
 	udpData.resetTrigger();
 	buffer[0]=100; udpData.push_back(buffer);
 	CHECK_EQUAL(false, udpData.trigged());
@@ -126,7 +126,7 @@ TEST(UDP_DATA_TEST, Trigger)
 
 	//checking size when trigged
 	udpData.resetTrigger();
-	udpData.setTrigger(50.0, 0, TRIGGER_SLOPE_RISING);
+	udpData.setTrigger(50.0, 0, TRIGGER_SLOPE_RISING, 0);
 	buffer[0]=0; udpData.push_back(buffer);
 	CHECK_EQUAL(10, udpData._data.size());
 	buffer[0]=100; udpData.push_back(buffer);
@@ -151,8 +151,9 @@ TEST(UDP_DATA_TEST, Trigger)
 
 	//checking trigger config
 	double level=0; int channel=0; trigger_slope_t triggerSlope=TRIGGER_SLOPE_RISING;
-	udpData.setTrigger(25.3, 7, TRIGGER_SLOPE_BOTH);
-	udpData.getTrigger(&level, &channel, &triggerSlope);
+	double hPos;
+	udpData.setTrigger(25.3, 7, TRIGGER_SLOPE_BOTH, 0);
+	udpData.getTrigger(&level, &channel, &triggerSlope, &hPos);
 	CHECK_EQUAL(25.3, level);
 	CHECK_EQUAL(7, channel);
 	CHECK_EQUAL(TRIGGER_SLOPE_BOTH, triggerSlope);
@@ -161,11 +162,13 @@ TEST(UDP_DATA_TEST, Trigger)
 	CallBackClass_t CallBackClass;
 	udpData.setTriggerCallBack((void(*)(void*))CallBackFunction, &CallBackClass);
 	udpData.resetTrigger();
-	udpData.setTrigger(25.3, 0, TRIGGER_SLOPE_BOTH);
+	udpData.setTrigger(25.3, 0, TRIGGER_SLOPE_BOTH, 0);
 	buffer[0]=0; udpData.push_back(buffer);
 	buffer[0]=100; udpData.push_back(buffer);
 	CHECK_EQUAL(true, udpData.trigged());
 	CHECK_EQUAL(true, CallBackClass.called);
+
+	//TODO : test trigger hPos
 
 }
 

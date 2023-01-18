@@ -15,6 +15,7 @@ class udpPlotFrame: public udpPlotFrameBase
 		void OnStartStopCapture(wxCommandEvent&);
 		void OnRefresh( wxCommandEvent& event );
 		void OnConfAcq( wxCommandEvent& event );
+		void OnTrigger(void);
 	private:
 		std::vector<mpInfoLegend*> mpInfoLegends;
 		std::vector<udpPlotWindow*> mpWindows;
@@ -34,3 +35,4 @@ class udpPlotFrame: public udpPlotFrameBase
 		wxArrayString _channelList;
 		//DECLARE_EVENT_TABLE()
 };
+void triggerCallBack(udpPlotFrame * frame);

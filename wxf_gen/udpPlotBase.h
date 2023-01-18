@@ -78,6 +78,7 @@ class AcquisitionDialog : public wxDialog
 		wxStaticText* m_staticText5;
 		wxStaticText* m_staticText6;
 		wxStaticText* m_staticText7;
+		wxStaticText* m_staticText8;
 		wxButton* m_button3;
 		wxButton* m_button4;
 
@@ -86,6 +87,7 @@ class AcquisitionDialog : public wxDialog
 		wxComboBox* triggerSource;
 		wxSpinCtrlDouble* triggerLevel;
 		wxComboBox* triggerSlope;
+		wxSpinCtrlDouble* triggerHorizontalPosition;
 
 		AcquisitionDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("udpPlot: Acquisition configuration"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
 

@@ -102,7 +102,7 @@ AcquisitionDialog::AcquisitionDialog( wxWindow* parent, wxWindowID id, const wxS
 	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Trigger") ), wxVERTICAL );
 
 	wxGridSizer* gSizer4;
-	gSizer4 = new wxGridSizer( 3, 2, 0, 0 );
+	gSizer4 = new wxGridSizer( 4, 2, 0, 0 );
 
 	m_staticText5 = new wxStaticText( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Source"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText5->Wrap( -1 );
@@ -130,6 +130,14 @@ AcquisitionDialog::AcquisitionDialog( wxWindow* parent, wxWindowID id, const wxS
 	triggerSlope->Append( wxT("Both") );
 	triggerSlope->SetSelection( 0 );
 	gSizer4->Add( triggerSlope, 0, wxALL|wxEXPAND, 5 );
+
+	m_staticText8 = new wxStaticText( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Horizontal position [%]"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText8->Wrap( -1 );
+	gSizer4->Add( m_staticText8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+	triggerHorizontalPosition = new wxSpinCtrlDouble( sbSizer1->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 10, 1 );
+	triggerHorizontalPosition->SetDigits( 0 );
+	gSizer4->Add( triggerHorizontalPosition, 0, wxALL, 5 );
 
 
 	sbSizer1->Add( gSizer4, 1, wxEXPAND, 5 );

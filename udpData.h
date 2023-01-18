@@ -28,8 +28,8 @@ class udpData_t
 		void getData(std::vector<double> & vectorX, std::vector< std::vector<double> > & vectorsY);
 		void setMaxBufferSize(size_t);
 		size_t getMaxBufferSize();
-		void setTrigger(double level, int channel, trigger_slope_t trigger_slope);
-		void getTrigger(double * level, int * channel, trigger_slope_t * trigger_slope);
+		void setTrigger(double level, int channel, trigger_slope_t trigger_slope, double horizontalPostion);
+		void getTrigger(double * level, int * channel, trigger_slope_t * trigger_slope, double * horizontalPosition);
 		bool trigged() { return _trigged;}
 		void resetTrigger() { _trigged=false;}
 		void setTriggerCallBack(void (* function)(void*), void * obj);
@@ -43,6 +43,7 @@ class udpData_t
 		bool _trigged=false;
 		double _triggerLevel=0.0;
 		size_t _triggerChannel=0;
+		double _triggerHorizontalPosition=10; //expressed as percent
 		trigger_slope_t _triggerSlope = TRIGGER_SLOPE_RISING;
 		size_t _triggerIndex=0;
 		void * _triggerCallBackArg;

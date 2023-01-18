@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(udpPlot)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
 
 add_executable(udpPlot wxf_gen/udpPlotBase.cpp main.cpp udpPlot.cpp udpPlotWindow.cpp udpData.cpp)
 add_executable(testUdpPlot testUdpPlot.cpp)
