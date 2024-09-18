@@ -13,6 +13,7 @@
 #ifndef UDP_DATA_TEST_FRIENDS
 #define UDP_DATA_TEST_FRIENDS
 #endif
+#include <cstddef>
 class udpData_t
 {
 	UDP_DATA_TEST_FRIENDS;

@@ -1,7 +1,7 @@
 #ifndef UDPPLOTWINDOW_H
 #define UDPPLOTWINDOW_H
 
-#include <mathplot.h>
+#include <wxmathplot/mathplot.h>
 wxDECLARE_EVENT(UDPPLOTWINDOW_VIEWCHANGED, wxCommandEvent);
 
 class udpPlotWindow : public mpWindow

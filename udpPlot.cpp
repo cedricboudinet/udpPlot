@@ -77,7 +77,7 @@ void udpPlotFrame::OnMenuItemLoadDataFormatSelected(wxCommandEvent& event)
 		mpScaleY * yAxis = new mpScaleY(_("Y"), mpALIGN_LEFT, false);
 		mpw->AddLayer(yAxis);
 		mpAxes_Y.push_back(yAxis);
-		mpInfoLegend * leg = new mpInfoLegend(wxRect(0,0,40,40), wxTRANSPARENT_BRUSH); //&hatch2));
+		mpInfoLegend * leg = new mpInfoLegend();//wxRect(0,0,40,40), wxTRANSPARENT_BRUSH); //&hatch2));
 		mpw->AddLayer( leg);
 		leg->SetVisible(true);
 		mpInfoLegends.push_back(leg); //ah?
@@ -95,7 +95,7 @@ void udpPlotFrame::OnMenuItemLoadDataFormatSelected(wxCommandEvent& event)
 		std::cout<<"name:"<<name<<" dest:"<<dest<<std::endl;
 		mpFXYVector * FXYvector = new mpFXYVector(_(name), 0);
 		wxPen   Vector1_PEN(*plotColours[i%plotColours.size()]);
-		FXYvector->ShowName(false);
+		//FXYvector->ShowName(false);
 		FXYvector->SetPen(Vector1_PEN);
 		FXYvector->SetContinuity(true);
 		mpWindows[dest]->AddLayer(FXYvector);
